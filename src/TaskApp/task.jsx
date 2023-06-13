@@ -1,31 +1,30 @@
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./task.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, updateStatus, deletedTask, editTask } from "../action/action";
 import { useEffect } from "react";
-import { MdModeEdit, MdOutlineClose } from "react-icons/md";
-import { GrFormClose, GrFormSubtract } from "react-icons/gr";
 
 const TaskApp = () => {
   const tasks = useSelector((state) => state?.todoReducer?.tasks);
   const [task, setTask] = useState({ task: "" });
   const dispatch = useDispatch();
+  const textareaRef = useRef(null);
   const [assign, setAssign] = useState([]);
   const [pending, setPending] = useState([]);
   const [complete, setComplete] = useState([]);
   const [buttonType, setButtonType] = useState(false);
+  /// all columns data
+  const Update = () => {
+    setAssign(tasks);
+    setPending(tasks);
+    setComplete(tasks);
+  };
 
-  // all columns data
   useEffect(() => {
-    const Update = () => {
-      setAssign(tasks);
-      setPending(tasks);
-      setComplete(tasks);
-    };
     Update();
+    resizeTextarea();
   }, [tasks]);
-
   console.log("➡️", assign);
   console.log("❌", buttonType);
 
@@ -45,6 +44,13 @@ const TaskApp = () => {
   const handleUpdate = () => {
     alert("Update task");
   };
+
+  const resizeTextarea = () => {
+    const textarea = textareaRef.current;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
   // this fun will filter excpet the current task id and assign filtered array to the task
   const handleDeleteTask = (taskId) => {
     dispatch(deletedTask(taskId));
@@ -55,7 +61,7 @@ const TaskApp = () => {
     if (!result.destination) return;
 
     // Determine the source and destination lists based on droppableIds
-    let sourceList, destinationList;
+    let sourceList;
     if (result.source.droppableId === "assign") {
       sourceList = assign;
     } else if (result.source.droppableId === "pending") {
@@ -64,6 +70,7 @@ const TaskApp = () => {
       sourceList = complete;
     }
 
+    let destinationList;
     if (result.destination.droppableId === "assign") {
       destinationList = assign;
     } else if (result.destination.droppableId === "pending") {
@@ -208,7 +215,20 @@ const TaskApp = () => {
                       </Draggable>
                     ))}
                   <div className="input-container">
-                    <input
+                    <div className="task-header">
+                      <span className="input-action">
+                        <span className="icons close">x</span>
+                        <span className="icons minus">-</span>
+                        <span className="icons dot">1</span>
+                      </span>
+                      <span className="status c">Add Tasks </span>
+                    </div>
+                    <textarea
+                      ref={textareaRef}
+                      onInput={resizeTextarea}
+                      style={{ overflow: "hidden" }}
+                      onBlur={handleClick}
+                      className="input"
                       type="text"
                       placeholder="Add your items from here...!!!"
                       name="task"
@@ -216,9 +236,9 @@ const TaskApp = () => {
                       onChange={(e) => setTask({ task: e.target.value })}
                     />
 
-                    <button className="btn" onClick={handleClick}>
+                    {/* <button className="" onClick={handleClick}>
                       +
-                    </button>
+                    </button> */}
                   </div>
                   {provider.placeholder}
                 </ul>

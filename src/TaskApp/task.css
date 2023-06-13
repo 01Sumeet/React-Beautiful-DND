@@ -123,7 +123,7 @@ ul {
   font-size: 11px;
   color: white;
   font-weight: 900 !important;
-  width: 15px;
+  width: 14px;
   height: 14px;
   text-align: center;
   /* vertical-align: middle; */
@@ -204,43 +204,37 @@ span:hover,
 }
 
 .input-container {
-  position: relative;
-  margin-bottom: 25px;
+  background-color: #424242;
+  border-radius: inherit;
 }
-.input-container label {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  font-size: 16px;
-  color: #fff;
-  pointer-events: none;
-  transition: all 0.5s ease-in-out;
-}
-.input-container input {
-  border: 0;
-  border-bottom: 1px solid #555;
-  background: transparent;
-  width: 97%;
-  text-align: center;
-  border-color: #dcf3e5 !important;
-  /* padding: 8px 0 5px 0; */
-  padding: 4px 0 4px 0;
-  font-size: 17px;
-  color: #fff;
-  margin: 12px 0px 12px 0px;
-}
-.input-container input:focus {
+.input {
+  padding: 14px 8px 0px 8px;
+  color: red;
+  background-color: transparent;
   border: none;
+  text-align: left;
+  vertical-align: middle;
+  position: relative;
+  resize: none;
+  /* overflow: hidden; */
+  /* height: auto; */
   outline: none;
-  border-bottom: 1px solid #e74c3c;
-}
-.input-container input:focus ~ label,
-.input-container input:valid ~ label {
-  top: -12px;
-  font-size: 12px;
+  width: 95%;
 }
 
 .status {
   position: relative;
   left: 25%;
+  color: #b6b6b6;
+}
+.input-action {
+  position: absolute;
+  left: 15px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 0;
+}
+.c {
+  left: 2%;
+  font-size: 14px;
 }
