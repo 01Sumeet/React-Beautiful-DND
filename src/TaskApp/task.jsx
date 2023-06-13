@@ -30,8 +30,10 @@ const TaskApp = () => {
 
   // This function will add new task to the assign stage
   const handleClick = () => {
+    if (task.task!== "") {
     dispatch(addTask(task));
-    setTask({ task: "" });
+    setTask({ task: "" });}
+    // else alert("Enter task details")
   };
   // this function will call editable task and set its value to input field
   const handleEditTask = (taskID, value) => {
@@ -44,7 +46,7 @@ const TaskApp = () => {
   const handleUpdate = () => {
     alert("Update task");
   };
-
+// To auto set the text area of input height
   const resizeTextarea = () => {
     const textarea = textareaRef.current;
     textarea.style.height = "auto";

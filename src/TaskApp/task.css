@@ -19,6 +19,7 @@ body {
   padding: 0px 0px 11px 0px;
   text-align: center;
 }
+
 .header {
   display: flex;
   justify-content: space-around;
@@ -29,12 +30,14 @@ body {
   border-radius: 10px 10px 0px 0px;
   padding: 1px 10px 1px 5px;
 }
+
 .header-toggel {
   position: relative;
   right: 522px;
   vertical-align: middle !important;
   margin: 0px 0 1px 1px;
 }
+
 .head {
   position: fixed;
   right: 500px;
@@ -79,6 +82,7 @@ ul {
   text-align: center !important;
   vertical-align: middle;
 }
+
 .draggable {
   top: auto !important;
   left: auto !important;
@@ -95,12 +99,13 @@ ul {
   transition: all 0.5s ease-in-out;
   margin: 0 0 6px 0px;
 }
+
 .list-content {
-  padding: 8px 13px 8px 13px;
-  word-break: break-all;
-  word-wrap: break-word;
+  padding: 8px;
   font-size: 14px;
   font-weight: 400;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .task-header {
@@ -111,10 +116,12 @@ ul {
   vertical-align: middle !important;
   /* text-align: center !important; */
 }
-.task-header :hover,
+
+.task-header:hover,
 .icons {
   color: #e8e8e8;
 }
+
 .icons {
   display: inline-block;
   background-color: yellow;
@@ -159,6 +166,7 @@ ul {
   scroll-behavior: smooth !important ;
   /* scroll-padding-top: 20px !important; */
 }
+
 .column::-webkit-scrollbar {
   display: none;
 }
@@ -170,11 +178,13 @@ ul {
 .complete {
   background: #595959;
 }
+
 .action {
   opacity: 0;
   position: absolute;
   left: 70%;
 }
+
 .btns {
   background-color: transparent;
   border: none;
@@ -182,11 +192,13 @@ ul {
   margin: 0;
   padding: 0;
 }
+
 span:hover,
 .btns {
   opacity: 1;
   cursor: pointer !important;
 }
+
 .draggable {
   cursor: move;
   cursor: grab;
@@ -207,19 +219,23 @@ span:hover,
   background-color: #424242;
   border-radius: inherit;
 }
+
 .input {
   padding: 14px 8px 0px 8px;
-  color: red;
+  color: #ececec;
+  font-size: 15px;
+  cursor: auto;
+  font-family: inherit;
   background-color: transparent;
   border: none;
   text-align: left;
   vertical-align: middle;
   position: relative;
   resize: none;
-  /* overflow: hidden; */
-  /* height: auto; */
   outline: none;
   width: 95%;
+  box-sizing: border-box;
+  margin-bottom: 14px;
 }
 
 .status {
@@ -227,6 +243,7 @@ span:hover,
   left: 25%;
   color: #b6b6b6;
 }
+
 .input-action {
   position: absolute;
   left: 15px;
@@ -234,7 +251,40 @@ span:hover,
   vertical-align: middle;
   margin: 0;
 }
+
 .c {
   left: 2%;
   font-size: 14px;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 768px) {
+  .input {
+    width: 100%;
+  }
+
+  .header-toggel {
+    right: auto;
+  }
+
+  .head {
+    right: auto;
+  }
+
+  .main-container {
+    min-width: auto;
+  }
+
+  .content-main-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .draggable {
+    width: 100%;
+  }
+
+  .column {
+    width: 100%;
+  }
 }
