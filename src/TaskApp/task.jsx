@@ -4,6 +4,9 @@ import "./task.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, updateStatus, deletedTask, editTask } from "../action/action";
 import { useEffect } from "react";
+import { Plus } from "phosphor-icons";
+import InputConatiner from "../Asset/InputConatiner";
+import Initialtext from "../Asset/InitialText";
 
 const TaskApp = () => {
   const tasks = useSelector((state) => state?.todoReducer?.tasks);
@@ -14,7 +17,7 @@ const TaskApp = () => {
   const [pending, setPending] = useState([]);
   const [complete, setComplete] = useState([]);
   const [buttonType, setButtonType] = useState(false);
-  /// all columns data
+  // all columns data
   const Update = () => {
     setAssign(tasks);
     setPending(tasks);
@@ -23,16 +26,21 @@ const TaskApp = () => {
 
   useEffect(() => {
     Update();
-    resizeTextarea();
+    console.log(textareaRef.current !== null);
+    if (textareaRef.current !== null) {
+      resizeTextarea();
+    }
   }, [tasks]);
-  console.log("➡️", assign);
-  console.log("❌", buttonType);
-
   // This function will add new task to the assign stage
   const handleClick = () => {
-    if (task.task!== "") {
-    dispatch(addTask(task));
-    setTask({ task: "" });}
+    if (task.task !== "") {
+      dispatch(addTask(task));
+      
+      setTask({ task: "" });
+    }
+
+
+    setButtonType(false);
     // else alert("Enter task details")
   };
   // this function will call editable task and set its value to input field
@@ -46,9 +54,11 @@ const TaskApp = () => {
   const handleUpdate = () => {
     alert("Update task");
   };
-// To auto set the text area of input height
+  // To auto set the text area of input height
   const resizeTextarea = () => {
+    debugger;
     const textarea = textareaRef.current;
+    console.log("🛑", textarea);
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
@@ -59,7 +69,7 @@ const TaskApp = () => {
   };
   // fun once the task is picked to drag
   const DragEndHandler = (result) => {
-    debugger;
+    console.log("😒");
     if (!result.destination) return;
 
     // Determine the source and destination lists based on droppableIds
@@ -180,7 +190,7 @@ const TaskApp = () => {
           <div className="content-main-container">
             <Droppable droppableId="assign">
               {(provider) => (
-                <ul
+                <div
                   {...provider.droppableProps}
                   ref={provider.innerRef}
                   className="column assign"
@@ -194,15 +204,24 @@ const TaskApp = () => {
                         draggableId={`${item.id}assign`}
                       >
                         {(provider) => (
-                          <li
+                          <div
                             {...provider.draggableProps}
                             {...provider.dragHandleProps}
                             ref={provider.innerRef}
                             className="draggable"
+                            style={{
+                              ...provider.draggableProps.style,
+                              zIndex: "9999" ,
+                              position: !provider.isDragging
+                                ? "relative"
+                                : "absolute",
+                            }}
                           >
+                            {console.log(provider.isDragging ? "Cool" : "fool")}
                             <div className="task-header">
                               <span
                                 className="icons close"
+                                title="Delete😒"
                                 onClick={() => handleDeleteTask(item.id)}
                               >
                                 x
@@ -212,44 +231,31 @@ const TaskApp = () => {
                               <span className="status">{item.status}</span>
                             </div>
                             <div className="list-content">{item.text.task}</div>
-                          </li>
+                          </div>
                         )}
                       </Draggable>
                     ))}
-                  <div className="input-container">
-                    <div className="task-header">
-                      <span className="input-action">
-                        <span className="icons close">x</span>
-                        <span className="icons minus">-</span>
-                        <span className="icons dot">1</span>
-                      </span>
-                      <span className="status c">Add Tasks </span>
-                    </div>
-                    <textarea
-                      ref={textareaRef}
-                      onInput={resizeTextarea}
+                  {buttonType ? (
+                    <InputConatiner
+                      r={textareaRef}
                       style={{ overflow: "hidden" }}
+                      onInput={resizeTextarea}
                       onBlur={handleClick}
-                      className="input"
-                      type="text"
-                      placeholder="Add your items from here...!!!"
-                      name="task"
                       value={task.task}
                       onChange={(e) => setTask({ task: e.target.value })}
+                      close = { ()=> setButtonType(false)}
                     />
-
-                    {/* <button className="" onClick={handleClick}>
-                      +
-                    </button> */}
-                  </div>
+                  ) : (
+                    <Initialtext onClick={() => setButtonType(true)} />
+                  )}
                   {provider.placeholder}
-                </ul>
+                </div>
               )}
             </Droppable>
 
             <Droppable droppableId="pending">
               {(provider) => (
-                <ul
+                <div
                   {...provider.droppableProps}
                   ref={provider.innerRef}
                   className="column pending"
@@ -263,7 +269,7 @@ const TaskApp = () => {
                         draggableId={`${item.id}pending`}
                       >
                         {(provider) => (
-                          <li
+                          <div
                             {...provider.draggableProps}
                             {...provider.dragHandleProps}
                             ref={provider.innerRef}
@@ -282,18 +288,18 @@ const TaskApp = () => {
                               <span className="status">{item.status}</span>
                             </div>
                             <div className="list-content">{item.text.task}</div>
-                          </li>
+                          </div>
                         )}
                       </Draggable>
                     ))}
 
                   {provider.placeholder}
-                </ul>
+                </div>
               )}
             </Droppable>
             <Droppable droppableId="complete">
               {(provider) => (
-                <ul
+                <div
                   {...provider.droppableProps}
                   ref={provider.innerRef}
                   className="column complete"
@@ -307,7 +313,7 @@ const TaskApp = () => {
                         draggableId={`${item.id}complete`}
                       >
                         {(provider) => (
-                          <li
+                          <div
                             {...provider.draggableProps}
                             {...provider.dragHandleProps}
                             ref={provider.innerRef}
@@ -329,13 +335,13 @@ const TaskApp = () => {
                             >
                               {item.status}✔️
                             </div>
-                          </li>
+                          </div>
                         )}
                       </Draggable>
                     ))}
 
                   {provider.placeholder}
-                </ul>
+                </div>
               )}
             </Droppable>
           </div>

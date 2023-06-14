@@ -60,7 +60,7 @@ ul {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
   background-color: #595959;
-  padding: 0px 20px 0px 20px;
+  padding: 15px 20px 15px 20px;
   height: 75vh;
 }
 
@@ -287,4 +287,33 @@ span:hover,
   .column {
     width: 100%;
   }
+}
+
+.create-task {
+  cursor: pointer !important;
+  background-color: #424242;
+  margin-top: 2px;
+  border: inherit;
+  border-radius: inherit;
+  padding: 10px;
+  text-align: center;
+  vertical-align: middle;
+  transition: opacity 1s ease-in-out;
+  opacity: 0;
+}
+
+.create-task.show{
+  opacity: 1;
+}
+.create-text {
+  color: #a9a9a9f7;
+  font-weight: 600;
+}
+
+.create-btn {
+  color: #a9a9a9f7;
+  margin: 0px 10px 0px -131px;
+  font-weight: 700;
+  /* background: aqua; */
+  padding: 4px 0px 0px 0px;
 }
