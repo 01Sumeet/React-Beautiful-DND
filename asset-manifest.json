@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/React-Beautiful-DND/static/css/main.e0b5826d.css",
-    "main.js": "/React-Beautiful-DND/static/js/main.7c997603.js",
+    "main.css": "/React-Beautiful-DND/static/css/main.9cafd42a.css",
+    "main.js": "/React-Beautiful-DND/static/js/main.3ecdbb27.js",
     "static/js/787.4006d57d.chunk.js": "/React-Beautiful-DND/static/js/787.4006d57d.chunk.js",
     "index.html": "/React-Beautiful-DND/index.html",
-    "main.e0b5826d.css.map": "/React-Beautiful-DND/static/css/main.e0b5826d.css.map",
-    "main.7c997603.js.map": "/React-Beautiful-DND/static/js/main.7c997603.js.map",
+    "main.9cafd42a.css.map": "/React-Beautiful-DND/static/css/main.9cafd42a.css.map",
+    "main.3ecdbb27.js.map": "/React-Beautiful-DND/static/js/main.3ecdbb27.js.map",
     "787.4006d57d.chunk.js.map": "/React-Beautiful-DND/static/js/787.4006d57d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e0b5826d.css",
-    "static/js/main.7c997603.js"
+    "static/css/main.9cafd42a.css",
+    "static/js/main.3ecdbb27.js"
   ]
 }
