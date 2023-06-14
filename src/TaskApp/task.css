@@ -16,7 +16,7 @@ body {
   border: 0.1px solidrgba(255, 255, 255, 0.2);
   min-width: 70rem;
   /* padding: 3.328rem; */
-  padding: 0px 0px 11px 0px;
+  padding: 0px 0px 0px 0px;
   text-align: center;
 }
 
