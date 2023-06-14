@@ -156,7 +156,7 @@ ul {
   /* width: 14.1rem; */
   background: #595959;
   box-shadow: 0 8px 32px 0 rgb(11 11 11 / 37%);
-  backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(4px); */
   -webkit-backdrop-filter: blur(4px);
   border-radius: inherit;
   border: 0px solid rgba(255, 255, 255, 0.18);
@@ -246,10 +246,11 @@ span:hover,
 
 .input-action {
   position: absolute;
-  left: 15px;
-  text-align: center;
+  left: 49px;
+  /* margin-right: -36px; */
+  padding-right: 180px;
+  /* text-align: center; */
   vertical-align: middle;
-  margin: 0;
 }
 
 .c {
@@ -302,7 +303,7 @@ span:hover,
   opacity: 0;
 }
 
-.create-task.show{
+.create-task.show {
   opacity: 1;
 }
 .create-text {

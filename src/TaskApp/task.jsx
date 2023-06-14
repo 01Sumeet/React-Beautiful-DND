@@ -10,19 +10,28 @@ import Initialtext from "../Asset/InitialText";
 
 const TaskApp = () => {
   const tasks = useSelector((state) => state?.todoReducer?.tasks);
-  const [task, setTask] = useState({ task: "" });
-  const dispatch = useDispatch();
-  const textareaRef = useRef(null);
-  const [assign, setAssign] = useState([]);
-  const [pending, setPending] = useState([]);
-  const [complete, setComplete] = useState([]);
-  const [buttonType, setButtonType] = useState(false);
-  // all columns data
+  const [taskState, setTaskState] = useState({
+    assign: tasks,
+    pending: tasks,
+    complete: tasks,
+  });
+
+  const { assign, pending, complete } = taskState;
+
+  console.log("🛑", assign);
+
   const Update = () => {
-    setAssign(tasks);
-    setPending(tasks);
-    setComplete(tasks);
+    setTaskState({
+      assign: tasks,
+      pending: tasks,
+      complete: tasks,
+    });
   };
+  const dispatch = useDispatch();
+  const [task, setTask] = useState({ task: "" });
+  const [buttonType, setButtonType] = useState(false);
+  const textareaRef = useRef(null);
+  // all columns data
 
   useEffect(() => {
     Update();
@@ -35,10 +44,9 @@ const TaskApp = () => {
   const handleClick = () => {
     if (task.task !== "") {
       dispatch(addTask(task));
-      
+
       setTask({ task: "" });
     }
-
 
     setButtonType(false);
     // else alert("Enter task details")
@@ -58,7 +66,7 @@ const TaskApp = () => {
   const resizeTextarea = () => {
     debugger;
     const textarea = textareaRef.current;
-    console.log("🛑", textarea);
+
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
@@ -121,12 +129,22 @@ const TaskApp = () => {
       reorderedList.splice(result.destination.index, 0, removed);
 
       if (result.source.droppableId === "assign") {
-        setAssign(reorderedList);
+        setTaskState(prevState => ({
+          ...prevState,
+          assign: reorderedList
+        }));
       } else if (result.source.droppableId === "pending") {
-        setPending(reorderedList);
-      } else {
-        setComplete(reorderedList);
+        setTaskState(prevState => ({
+          ...prevState,
+          pending: reorderedList
+        }));
+      } else if (result.source.droppableId === "complete") {
+        setTaskState(prevState => ({
+          ...prevState,
+          complete: reorderedList
+        }));
       }
+      
       // this part is for drag and drop between columns
     } else {
       const sourceList =
@@ -149,26 +167,43 @@ const TaskApp = () => {
       destinationListCopy.splice(result.destination.index, 0, removed);
 
       if (result.source.droppableId === "assign") {
-        setAssign(sourceListCopy);
+       setTaskState( prevState => ({
+        ...prevState, assign: sourceListCopy
+       }))
         if (result.destination.droppableId === "pending") {
-          setPending(destinationListCopy);
+         setTaskState( prevState => ( {
+          ...prevState, pending: destinationListCopy
+         }))
         } else {
-          setComplete(destinationListCopy);
+          setTaskState( prevState => ({
+            ...prevState, complete: destinationListCopy
+          }))
         }
       } else if (result.source.droppableId === "pending") {
-        setPending(sourceListCopy);
+       setTaskState( prevState => ({
+        ...prevState, pending: sourceListCopy
+       }))
         if (result.destination.droppableId === "assign") {
-          setAssign(destinationListCopy);
+        setTaskState( prevState => ({
+          ...prevState, assign: sourceListCopy
+        }))
         } else {
-          setComplete(destinationListCopy);
+         setTaskState( prevState => ({
+          ...prevState, complete: destinationListCopy
+         }))
         }
       } else {
-        setComplete(sourceListCopy);
+        setTaskState( prevState => ( {
+          ...prevState, complete: sourceListCopy
+        }))
         if (result.destination.droppableId === "assign") {
-          setAssign(destinationListCopy);
+        setTaskState( prevState => ({
+          ...prevState, assign: destinationListCopy
+        }))
         } else {
-          setPending(destinationListCopy);
-        }
+setTaskState( prevState => ({
+  ...prevState, pending:destinationListCopy
+}))        }
       }
     }
   };
@@ -211,7 +246,7 @@ const TaskApp = () => {
                             className="draggable"
                             style={{
                               ...provider.draggableProps.style,
-                              zIndex: "9999" ,
+                              zIndex: "9999",
                               position: !provider.isDragging
                                 ? "relative"
                                 : "absolute",
@@ -243,7 +278,7 @@ const TaskApp = () => {
                       onBlur={handleClick}
                       value={task.task}
                       onChange={(e) => setTask({ task: e.target.value })}
-                      close = { ()=> setButtonType(false)}
+                      close={() => setButtonType(false)}
                     />
                   ) : (
                     <Initialtext onClick={() => setButtonType(true)} />
