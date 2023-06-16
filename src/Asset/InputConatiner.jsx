@@ -5,8 +5,8 @@ const InputConatiner = (prop) => {
     <div className="input-container" id="input-container">
       <div className="task-header">
         <span className="input-action">
-          <span className="icons close" title="Band krna hai..." onClick={prop.close}>x</span>
-          <span className="icons minus">-</span>
+          <span className="icons close" title="Band kr du...? 🤔 " onClick={prop.close}>x</span>
+          <span className="icons minus" >-</span>
           <span className="icons dot">1</span>
         </span>
         <span className="status c">Add Tasks </span>

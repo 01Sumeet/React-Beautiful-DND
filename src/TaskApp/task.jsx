@@ -4,10 +4,9 @@ import "./task.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, updateStatus, deletedTask, editTask } from "../action/action";
 import { useEffect } from "react";
-import { Plus } from "phosphor-icons";
 import InputConatiner from "../Asset/InputConatiner";
 import Initialtext from "../Asset/InitialText";
-
+import { Plus } from "phosphor-icons";
 const TaskApp = () => {
   const tasks = useSelector((state) => state?.todoReducer?.tasks);
   const [taskState, setTaskState] = useState({
@@ -15,11 +14,7 @@ const TaskApp = () => {
     pending: tasks,
     complete: tasks,
   });
-
   const { assign, pending, complete } = taskState;
-
-  console.log("🛑", assign);
-
   const Update = () => {
     setTaskState({
       assign: tasks,
@@ -32,10 +27,8 @@ const TaskApp = () => {
   const [buttonType, setButtonType] = useState(false);
   const textareaRef = useRef(null);
   // all columns data
-
   useEffect(() => {
     Update();
-    console.log(textareaRef.current !== null);
     if (textareaRef.current !== null) {
       resizeTextarea();
     }
@@ -44,10 +37,8 @@ const TaskApp = () => {
   const handleClick = () => {
     if (task.task !== "") {
       dispatch(addTask(task));
-
       setTask({ task: "" });
     }
-
     setButtonType(false);
     // else alert("Enter task details")
   };
@@ -58,28 +49,23 @@ const TaskApp = () => {
     console.log("Edit task", value, "id===", taskID);
     dispatch(editTask(taskID, task));
   };
-
   const handleUpdate = () => {
     alert("Update task");
   };
   // To auto set the text area of input height
   const resizeTextarea = () => {
-    debugger;
     const textarea = textareaRef.current;
-
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   };
-
   // this fun will filter excpet the current task id and assign filtered array to the task
   const handleDeleteTask = (taskId) => {
     dispatch(deletedTask(taskId));
   };
   // fun once the task is picked to drag
   const DragEndHandler = (result) => {
-    console.log("😒");
+    debugger;
     if (!result.destination) return;
-
     // Determine the source and destination lists based on droppableIds
     let sourceList;
     if (result.source.droppableId === "assign") {
@@ -89,7 +75,6 @@ const TaskApp = () => {
     } else if (result.source.droppableId === "complete") {
       sourceList = complete;
     }
-
     let destinationList;
     if (result.destination.droppableId === "assign") {
       destinationList = assign;
@@ -98,10 +83,8 @@ const TaskApp = () => {
     } else if (result.destination.droppableId === "complete") {
       destinationList = complete;
     }
-
     // Retrieve the dragged task object from the source list
     const draggedTask = sourceList[result.source.index];
-
     // Determine the new status based on the destination droppableId
     let newStatus;
     if (result.destination.droppableId === "assign") {
@@ -111,10 +94,8 @@ const TaskApp = () => {
     } else if (result.destination.droppableId === "complete") {
       newStatus = "Completed";
     }
-
     // Dispatch the updateStatus action
     dispatch(updateStatus(draggedTask.id, newStatus));
-
     //this fun will drag and drops the task within same container
     if (result.source.droppableId === result.destination.droppableId) {
       const list =
@@ -123,28 +104,25 @@ const TaskApp = () => {
           : result.source.droppableId === "pending"
           ? pending
           : complete;
-
       const reorderedList = [...list];
       const [removed] = reorderedList.splice(result.source.index, 1);
       reorderedList.splice(result.destination.index, 0, removed);
-
       if (result.source.droppableId === "assign") {
-        setTaskState(prevState => ({
+        setTaskState((prevState) => ({
           ...prevState,
-          assign: reorderedList
+          assign: reorderedList,
         }));
       } else if (result.source.droppableId === "pending") {
-        setTaskState(prevState => ({
+        setTaskState((prevState) => ({
           ...prevState,
-          pending: reorderedList
+          pending: reorderedList,
         }));
       } else if (result.source.droppableId === "complete") {
-        setTaskState(prevState => ({
+        setTaskState((prevState) => ({
           ...prevState,
-          complete: reorderedList
+          complete: reorderedList,
         }));
       }
-      
       // this part is for drag and drop between columns
     } else {
       const sourceList =
@@ -153,57 +131,64 @@ const TaskApp = () => {
           : result.source.droppableId === "pending"
           ? pending
           : complete;
-
       const destinationList =
         result.destination.droppableId === "assign"
           ? assign
           : result.destination.droppableId === "pending"
           ? pending
           : complete;
-
       const sourceListCopy = [...sourceList];
       const destinationListCopy = [...destinationList];
       const [removed] = sourceListCopy.splice(result.source.index, 1);
       destinationListCopy.splice(result.destination.index, 0, removed);
-
       if (result.source.droppableId === "assign") {
-       setTaskState( prevState => ({
-        ...prevState, assign: sourceListCopy
-       }))
+        setTaskState((prevState) => ({
+          ...prevState,
+          assign: sourceListCopy,
+        }));
         if (result.destination.droppableId === "pending") {
-         setTaskState( prevState => ( {
-          ...prevState, pending: destinationListCopy
-         }))
+          setTaskState((prevState) => ({
+            ...prevState,
+            pending: destinationListCopy,
+          }));
         } else {
-          setTaskState( prevState => ({
-            ...prevState, complete: destinationListCopy
-          }))
+          setTaskState((prevState) => ({
+            ...prevState,
+            complete: destinationListCopy,
+          }));
         }
       } else if (result.source.droppableId === "pending") {
-       setTaskState( prevState => ({
-        ...prevState, pending: sourceListCopy
-       }))
+        setTaskState((prevState) => ({
+          ...prevState,
+          pending: sourceListCopy,
+        }));
         if (result.destination.droppableId === "assign") {
-        setTaskState( prevState => ({
-          ...prevState, assign: sourceListCopy
-        }))
+          setTaskState((prevState) => ({
+            ...prevState,
+            assign: sourceListCopy,
+          }));
         } else {
-         setTaskState( prevState => ({
-          ...prevState, complete: destinationListCopy
-         }))
+          setTaskState((prevState) => ({
+            ...prevState,
+            complete: destinationListCopy,
+          }));
         }
       } else {
-        setTaskState( prevState => ( {
-          ...prevState, complete: sourceListCopy
-        }))
+        setTaskState((prevState) => ({
+          ...prevState,
+          complete: sourceListCopy,
+        }));
         if (result.destination.droppableId === "assign") {
-        setTaskState( prevState => ({
-          ...prevState, assign: destinationListCopy
-        }))
+          setTaskState((prevState) => ({
+            ...prevState,
+            assign: destinationListCopy,
+          }));
         } else {
-setTaskState( prevState => ({
-  ...prevState, pending:destinationListCopy
-}))        }
+          setTaskState((prevState) => ({
+            ...prevState,
+            pending: destinationListCopy,
+          }));
+        }
       }
     }
   };
@@ -220,7 +205,6 @@ setTaskState( prevState => ({
           </div>{" "}
           <span className="head">Ticket Status 📝</span>
         </div>
-
         <DragDropContext onDragEnd={DragEndHandler}>
           <div className="content-main-container">
             <Droppable droppableId="assign">
@@ -234,9 +218,9 @@ setTaskState( prevState => ({
                     ?.filter((x) => x?.status === "Assign")
                     .map((item, index) => (
                       <Draggable
-                        key={`${item.id}assign`}
+                        key={item.id}
                         index={index}
-                        draggableId={`${item.id}assign`}
+                        draggableId={item.id}
                       >
                         {(provider) => (
                           <div
@@ -252,16 +236,20 @@ setTaskState( prevState => ({
                                 : "absolute",
                             }}
                           >
-                            {console.log(provider.isDragging ? "Cool" : "fool")}
                             <div className="task-header">
                               <span
                                 className="icons close"
-                                title="Delete😒"
+                                title="Delete krdu..? 😒"
                                 onClick={() => handleDeleteTask(item.id)}
                               >
                                 x
                               </span>
-                              <span className="icons minus">-</span>
+                              <span
+                                className="icons minus"
+                                title="Wanna edit something..? 📝"
+                              >
+                                -
+                              </span>
                               <span className="icons dot">{index + 1}</span>
                               <span className="status">{item.status}</span>
                             </div>
@@ -287,7 +275,6 @@ setTaskState( prevState => ({
                 </div>
               )}
             </Droppable>
-
             <Droppable droppableId="pending">
               {(provider) => (
                 <div
@@ -299,9 +286,9 @@ setTaskState( prevState => ({
                     ?.filter((x) => x?.status === "Pending")
                     .map((item, index) => (
                       <Draggable
-                        key={`${item.id}pending`}
+                        key={item.id}
                         index={index}
-                        draggableId={`${item.id}pending`}
+                        draggableId={item.id}
                       >
                         {(provider) => (
                           <div
@@ -318,7 +305,6 @@ setTaskState( prevState => ({
                                 x
                               </span>
                               <span className="icons minus">-</span>
-
                               <span className="icons dot">{index + 1}</span>
                               <span className="status">{item.status}</span>
                             </div>
@@ -327,7 +313,6 @@ setTaskState( prevState => ({
                         )}
                       </Draggable>
                     ))}
-
                   {provider.placeholder}
                 </div>
               )}
@@ -343,9 +328,9 @@ setTaskState( prevState => ({
                     ?.filter((x) => x?.status === "Completed")
                     .map((item, index) => (
                       <Draggable
-                        key={`${item.id}complete`}
+                        key={item.id}
                         index={index}
-                        draggableId={`${item.id}complete`}
+                        draggableId={item.id}
                       >
                         {(provider) => (
                           <div
@@ -374,7 +359,6 @@ setTaskState( prevState => ({
                         )}
                       </Draggable>
                     ))}
-
                   {provider.placeholder}
                 </div>
               )}

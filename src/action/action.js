@@ -36,7 +36,7 @@ export const editTask = (taskID, newText) => ({
   },
 });
 export const updateStatus = (taskID, newStatus) => ({
-  type: 'UPDATE_STATUS',
+  type: "UPDATE_STATUS",
   payload: {
     id: taskID,
     status: newStatus,

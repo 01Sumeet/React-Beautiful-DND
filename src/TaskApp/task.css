@@ -122,9 +122,10 @@ ul {
   color: #e8e8e8;
 }
 
+/* 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 */
 .icons {
   display: inline-block;
-  background-color: yellow;
+  cursor: pointer;
   margin: 0px 2.5px;
   /* padding: 0px 0; */
   font-size: 11px;
@@ -161,8 +162,8 @@ ul {
   border-radius: inherit;
   border: 0px solid rgba(255, 255, 255, 0.18);
   padding: 10px 10px 10px 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
   scroll-behavior: smooth !important ;
   /* scroll-padding-top: 20px !important; */
 }
@@ -193,26 +194,10 @@ ul {
   padding: 0;
 }
 
-span:hover,
+.input-action:hover,
 .btns {
   opacity: 1;
   cursor: pointer !important;
-}
-
-.draggable {
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  .thumbnails-list {
-    cursor: pointer;
-  }
-}
-
-.draggable:active {
-  cursor: grabbing;
-  cursor: -moz-grabbing;
-  cursor: -webkit-grabbing;
 }
 
 .input-container {
@@ -240,7 +225,7 @@ span:hover,
 
 .status {
   position: relative;
-  left: 25%;
+  left: 19%;
   color: #b6b6b6;
 }
 

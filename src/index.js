@@ -10,7 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 
 
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(() => console.log(store.getState()));
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 

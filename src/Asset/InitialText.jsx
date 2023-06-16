@@ -1,7 +1,6 @@
 const Initialtext = (props) => {
-  console.log(props);
   return (
-    <div className="create-task show" onClick={props.onClick}>
+    <div className="create-task show"  onClick={props.onClick}>
       <span className="create-btn">
         <i className="ph-bold ph-plus" />
       </span>
