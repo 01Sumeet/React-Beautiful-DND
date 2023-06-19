@@ -8,19 +8,12 @@ import InputConatiner from "../Asset/InputConatiner";
 import Initialtext from "../Asset/InitialText";
 import { Plus } from "phosphor-icons";
 const TaskApp = () => {
-  const tasks = useSelector((state) => state?.todoReducer?.tasks);
-  const [taskState, setTaskState] = useState({
-    assign: tasks,
-    pending: tasks,
-    complete: tasks,
-  });
-  const { assign, pending, complete } = taskState;
+  const taskState = useSelector((state) => state?.todoReducer?.tasks);
+  const [tasks, setTaskState] = useState(taskState);
+  console.log(tasks, "🛑");
+  // const { assign, pending, complete } = taskState;
   const Update = () => {
-    setTaskState({
-      assign: tasks,
-      pending: tasks,
-      complete: tasks,
-    });
+    setTaskState(taskState);
   };
   const dispatch = useDispatch();
   const [task, setTask] = useState({ task: "" });
@@ -32,7 +25,7 @@ const TaskApp = () => {
     if (textareaRef.current !== null) {
       resizeTextarea();
     }
-  }, [tasks]);
+  }, [taskState]);
   // This function will add new task to the assign stage
   const handleClick = () => {
     if (task.task !== "") {
@@ -64,132 +57,39 @@ const TaskApp = () => {
   };
   // fun once the task is picked to drag
   const DragEndHandler = (result) => {
-    debugger;
+    console.log(result);
     if (!result.destination) return;
-    // Determine the source and destination lists based on droppableIds
-    let sourceList;
-    if (result.source.droppableId === "assign") {
-      sourceList = assign;
-    } else if (result.source.droppableId === "pending") {
-      sourceList = pending;
-    } else if (result.source.droppableId === "complete") {
-      sourceList = complete;
-    }
-    let destinationList;
-    if (result.destination.droppableId === "assign") {
-      destinationList = assign;
-    } else if (result.destination.droppableId === "pending") {
-      destinationList = pending;
-    } else if (result.destination.droppableId === "complete") {
-      destinationList = complete;
-    }
-    // Retrieve the dragged task object from the source list
-    const draggedTask = sourceList[result.source.index];
-    // Determine the new status based on the destination droppableId
-    let newStatus;
-    if (result.destination.droppableId === "assign") {
-      newStatus = "Assign";
-    } else if (result.destination.droppableId === "pending") {
-      newStatus = "Pending";
-    } else if (result.destination.droppableId === "complete") {
-      newStatus = "Completed";
-    }
-    // Dispatch the updateStatus action
+
+    const sourceListId = result.source.droppableId;
+    const destinationListId = result.destination.droppableId;
+
+    const draggedTask = tasks.find((task) => task.id === result.draggableId);
+
+    const newStatus = destinationListId.charAt(0) + destinationListId.slice(1);
+
     dispatch(updateStatus(draggedTask.id, newStatus));
-    //this fun will drag and drops the task within same container
-    if (result.source.droppableId === result.destination.droppableId) {
-      const list =
-        result.source.droppableId === "assign"
-          ? assign
-          : result.source.droppableId === "pending"
-          ? pending
-          : complete;
-      const reorderedList = [...list];
-      const [removed] = reorderedList.splice(result.source.index, 1);
-      reorderedList.splice(result.destination.index, 0, removed);
-      if (result.source.droppableId === "assign") {
-        setTaskState((prevState) => ({
-          ...prevState,
-          assign: reorderedList,
-        }));
-      } else if (result.source.droppableId === "pending") {
-        setTaskState((prevState) => ({
-          ...prevState,
-          pending: reorderedList,
-        }));
-      } else if (result.source.droppableId === "complete") {
-        setTaskState((prevState) => ({
-          ...prevState,
-          complete: reorderedList,
-        }));
-      }
-      // this part is for drag and drop between columns
+
+    if (sourceListId === destinationListId) {
+      const updatedList = [...tasks];
+      const [removed] = updatedList.splice(result.source.index, 1);
+      updatedList.splice(result.destination.index, 0, removed);
+
+      setTask(updatedList);
     } else {
-      const sourceList =
-        result.source.droppableId === "assign"
-          ? assign
-          : result.source.droppableId === "pending"
-          ? pending
-          : complete;
-      const destinationList =
-        result.destination.droppableId === "assign"
-          ? assign
-          : result.destination.droppableId === "pending"
-          ? pending
-          : complete;
-      const sourceListCopy = [...sourceList];
-      const destinationListCopy = [...destinationList];
-      const [removed] = sourceListCopy.splice(result.source.index, 1);
-      destinationListCopy.splice(result.destination.index, 0, removed);
-      if (result.source.droppableId === "assign") {
-        setTaskState((prevState) => ({
-          ...prevState,
-          assign: sourceListCopy,
-        }));
-        if (result.destination.droppableId === "pending") {
-          setTaskState((prevState) => ({
-            ...prevState,
-            pending: destinationListCopy,
-          }));
-        } else {
-          setTaskState((prevState) => ({
-            ...prevState,
-            complete: destinationListCopy,
-          }));
-        }
-      } else if (result.source.droppableId === "pending") {
-        setTaskState((prevState) => ({
-          ...prevState,
-          pending: sourceListCopy,
-        }));
-        if (result.destination.droppableId === "assign") {
-          setTaskState((prevState) => ({
-            ...prevState,
-            assign: sourceListCopy,
-          }));
-        } else {
-          setTaskState((prevState) => ({
-            ...prevState,
-            complete: destinationListCopy,
-          }));
-        }
-      } else {
-        setTaskState((prevState) => ({
-          ...prevState,
-          complete: sourceListCopy,
-        }));
-        if (result.destination.droppableId === "assign") {
-          setTaskState((prevState) => ({
-            ...prevState,
-            assign: destinationListCopy,
-          }));
-        } else {
-          setTaskState((prevState) => ({
-            ...prevState,
-            pending: destinationListCopy,
-          }));
-        }
-      }
+      const sourceList = [
+        ...tasks.filter((task) => task.status === sourceListId),
+      ];
+      const destinationList = [
+        ...tasks.filter((task) => task.status === destinationListId),
+      ];
+      const [removed] = sourceList.splice(result.source.index, 1);
+      destinationList.splice(result.destination.index, 0, removed);
+
+      const updatedTasks = tasks.filter(
+        (task) =>
+          task.status !== sourceListId && task.status !== destinationListId
+      );
+      setTask([...updatedTasks, ...sourceList, ...destinationList]);
     }
   };
 
@@ -214,8 +114,8 @@ const TaskApp = () => {
                   ref={provider.innerRef}
                   className="column assign"
                 >
-                  {assign
-                    ?.filter((x) => x?.status === "Assign")
+                  {tasks
+                    ?.filter((x) => x?.status === "assign")
                     .map((item, index) => (
                       <Draggable
                         key={item.id}
@@ -282,8 +182,8 @@ const TaskApp = () => {
                   ref={provider.innerRef}
                   className="column pending"
                 >
-                  {assign
-                    ?.filter((x) => x?.status === "Pending")
+                  {tasks
+                    ?.filter((x) => x?.status === "pending")
                     .map((item, index) => (
                       <Draggable
                         key={item.id}
@@ -324,8 +224,8 @@ const TaskApp = () => {
                   ref={provider.innerRef}
                   className="column complete"
                 >
-                  {assign
-                    ?.filter((x) => x?.status === "Completed")
+                  {tasks
+                    ?.filter((x) => x?.status === "complete")
                     .map((item, index) => (
                       <Draggable
                         key={item.id}
